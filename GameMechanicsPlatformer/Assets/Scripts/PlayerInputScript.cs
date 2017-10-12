@@ -32,16 +32,17 @@ public class PlayerInputScript : MonoBehaviour
 	    float horizontValue = Input.GetAxis("Horizontal");
 
         //check if walking
-	    if (horizontValue < 0.1f && horizontValue > -0.1f)
-	    {
-	        _isWalking = false;
-	    }
-	    else
+	    if (_rigidbody.velocity.magnitude > 0.01 && _grounded)
 	    {
 	        _isWalking = true;
 	    }
+	    else
+	    {
+	        _isWalking = false;
+	    }
         //set animator value to running value for animations
         _animator.SetBool("IsRunning",_isWalking);
+        
         //add velocity to the rigidbody in the move direction
         _rigidbody.velocity = new Vector2(horizontValue * _speed,_rigidbody.velocity.y);
 
