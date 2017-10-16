@@ -10,17 +10,19 @@ public class PlayerInputScript : MonoBehaviour
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
+    [SerializeField] private bool _gravityReversed = false;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private bool _isWalking;
     private bool _grounded = false;
-    private float _groundRadius = 0.1f;
+    private float _groundRadius = 0.2f;
 
 	// Use this for initialization
 	void Start () {
         //get the components of the player
 	    _rigidbody = GetComponent<Rigidbody2D>();
 	    _animator = GetComponent<Animator>();
+	    _rigidbody.gravityScale = 1;
 	}
 	
 	// Update is called once per frame
@@ -49,10 +51,10 @@ public class PlayerInputScript : MonoBehaviour
         //flip the player when going into negative direction
 	    if (horizontValue > 0 && !_facingRight)
 	    {
-	        Flip();
+	        FlipXAxis();
 	    }else if (horizontValue < 0 && _facingRight)
 	    {
-	        Flip();
+	        FlipXAxis();
 	    }
 
 
@@ -65,7 +67,7 @@ public class PlayerInputScript : MonoBehaviour
 	    }
 	}
 
-    private void Flip()
+    private void FlipXAxis()
     {
         //oposite direction
         _facingRight = !_facingRight;
@@ -79,5 +81,10 @@ public class PlayerInputScript : MonoBehaviour
         //apply that to the local scale
         transform.localScale = theScale;
 
+    }
+
+    private void FlipYAxis()
+    {
+        
     }
 }
