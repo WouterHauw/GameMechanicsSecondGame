@@ -108,10 +108,6 @@ public class PlayerInputScript : MonoBehaviour
 
     }
 
-    private void FlipYAxis()
-    {
-        
-    }
 
     private void Die()
     {
