@@ -1,16 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInputScript : MonoBehaviour
 {
+    //groundcheck
     public Transform GroundCheck;
     public LayerMask whatIsGround;
+
+    //stats
+    public int CurrentHealth;
+    [SerializeField] private int _maxHealth = 3;
 
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
     [SerializeField] private bool _gravityReversed = false;
+
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private bool _isWalking;
@@ -23,8 +30,26 @@ public class PlayerInputScript : MonoBehaviour
 	    _rigidbody = GetComponent<Rigidbody2D>();
 	    _animator = GetComponent<Animator>();
 	    _rigidbody.gravityScale = 1;
+	    CurrentHealth = _maxHealth;
 	}
-	
+
+    void Update()
+    {
+        if (CurrentHealth > _maxHealth)
+        {
+            CurrentHealth = _maxHealth;
+        }
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
+        if (transform.position.y < -50f)
+        {
+            Die();
+        }
+    }
+
+
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
@@ -86,5 +111,19 @@ public class PlayerInputScript : MonoBehaviour
     private void FlipYAxis()
     {
         
+    }
+
+    private void Die()
+    {
+        //restart
+        SceneManager.LoadScene("_MainScene");
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Saw"))
+        {
+            other.gameObject.SetActive(false);
+            CurrentHealth -= 1;
+        }
     }
 }
