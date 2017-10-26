@@ -10,9 +10,6 @@ public class PlayerInputScript : MonoBehaviour
     public LayerMask whatIsGround;
 
     //stats
-    public int CurrentHealth;
-    [SerializeField] private int _maxHealth = 3;
-
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
@@ -23,26 +20,19 @@ public class PlayerInputScript : MonoBehaviour
     private bool _isWalking;
     private bool _grounded = false;
     private float _groundRadius = 0.2f;
+    private Health _characterUi;
 
 	// Use this for initialization
 	void Start () {
         //get the components of the player
 	    _rigidbody = GetComponent<Rigidbody2D>();
 	    _animator = GetComponent<Animator>();
-	    _rigidbody.gravityScale = 1;
-	    CurrentHealth = _maxHealth;
+	    _characterUi = GetComponent<Health>();
+        _rigidbody.gravityScale = 1;
 	}
 
     void Update()
     {
-        if (CurrentHealth > _maxHealth)
-        {
-            CurrentHealth = _maxHealth;
-        }
-        if (CurrentHealth <= 0)
-        {
-            Die();
-        }
         if (transform.position.y < -50f)
         {
             Die();
@@ -119,7 +109,17 @@ public class PlayerInputScript : MonoBehaviour
         if (other.gameObject.CompareTag("Saw"))
         {
             other.gameObject.SetActive(false);
-            CurrentHealth -= 1;
+            _characterUi.DealDamage(6);
+        }
+        
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Heart"))
+        {
+            collider.gameObject.SetActive(false);
+            _characterUi.AddHealth(10);
         }
     }
 }

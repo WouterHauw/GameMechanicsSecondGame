@@ -17,9 +17,5 @@ public class HUD : MonoBehaviour
         _player = player.GetComponent<PlayerInputScript>();
     }
 
-    void Update()
-    {
-        HeartImage.sprite = HeartSprites[_player.CurrentHealth];
-    }
 
 }
