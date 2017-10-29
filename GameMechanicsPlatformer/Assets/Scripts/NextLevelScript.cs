@@ -8,7 +8,7 @@ public class NextLevelScript : MonoBehaviour {
     {
         if (other.gameObject.name == "Player")
         {
-            SceneManager.LoadScene("EndbossScene");
+            other.GetComponent<PlayerInputScript>().spawnPosition = other.gameObject.transform.position;
         }
     }
 }

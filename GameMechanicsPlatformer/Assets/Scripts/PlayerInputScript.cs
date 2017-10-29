@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInputScript : MonoBehaviour
 {
     //groundcheck
     public Transform GroundCheck;
+
+    public Vector3 spawnPosition;
     public LayerMask whatIsGround;
+    public Text CoinText;
 
     //stats
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
     [SerializeField] private bool _gravityReversed = false;
+    [SerializeField] private int _coin = 0;
 
     private Rigidbody2D _rigidbody;
     private Animator _animator;
@@ -21,6 +26,9 @@ public class PlayerInputScript : MonoBehaviour
     private bool _grounded = false;
     private float _groundRadius = 0.2f;
     private Health _characterUi;
+    private PlayerShoot _characterShoot;
+
+    
 
 	// Use this for initialization
 	void Start () {
@@ -28,11 +36,14 @@ public class PlayerInputScript : MonoBehaviour
 	    _rigidbody = GetComponent<Rigidbody2D>();
 	    _animator = GetComponent<Animator>();
 	    _characterUi = GetComponent<Health>();
+	    _characterShoot = GetComponent<PlayerShoot>();
         _rigidbody.gravityScale = 1;
+	    spawnPosition = gameObject.transform.position;
 	}
 
     void Update()
     {
+        CoinText.text = _coin.ToString();
         if (transform.position.y < -50f)
         {
             Die();
@@ -103,6 +114,7 @@ public class PlayerInputScript : MonoBehaviour
     {
         //restart
         SceneManager.LoadScene("_MainScene");
+        gameObject.transform.position = spawnPosition;
     }
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -110,6 +122,7 @@ public class PlayerInputScript : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             _characterUi.DealDamage(6);
+            _characterShoot.CurrentAmmoBarValue = 0;
         }
         
     }
@@ -120,6 +133,13 @@ public class PlayerInputScript : MonoBehaviour
         {
             collider.gameObject.SetActive(false);
             _characterUi.AddHealth(10);
+        }
+        if (collider.gameObject.CompareTag("Coin"))
+        {
+            _coin++;
+            collider.gameObject.SetActive(false);
+            _characterShoot.Ammunition += 1;
+
         }
     }
 }
