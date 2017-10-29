@@ -91,6 +91,10 @@ public class PlayerInputScript : MonoBehaviour
             //add jump force to the y axis of the rigidbody
             _rigidbody.AddForce(new Vector2(0,_jumpForce));
 	    }
+	    if (Input.GetKeyDown(KeyCode.Escape))
+	    {
+	        Application.Quit();
+	    }
 	}
 
     private void FlipXAxis()
@@ -140,6 +144,12 @@ public class PlayerInputScript : MonoBehaviour
             collider.gameObject.SetActive(false);
             _characterShoot.Ammunition += 1;
 
+        }
+        if (collider.gameObject.CompareTag("Spike"))
+        {
+            collider.gameObject.SetActive(false);
+            _characterUi.DealDamage(6);
+            _characterShoot.CurrentAmmoBarValue = 0;
         }
     }
 }

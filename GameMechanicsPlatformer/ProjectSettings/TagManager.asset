@@ -8,6 +8,7 @@ TagManager:
   - Heart
   - Fireball
   - Coin
+  - Spike
   layers:
   - Default
   - TransparentFX
