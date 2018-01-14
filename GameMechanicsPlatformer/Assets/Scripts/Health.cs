@@ -1,24 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
     public float CurrentHealth { get; set; }
     public float MaxHealth { get; set; }
+    public LevelManager levelManager;
+    public int Lives;
+    public Text livesText;
 
     public Slider HealthBar;
 
     // Use this for initialization
     void Start()
     {
+        levelManager = FindObjectOfType<LevelManager>();
+        Lives = 10;
         MaxHealth = 20f;
         CurrentHealth = MaxHealth;
-
+        livesText.text = Lives.ToString();
+        livesText.gameObject.SetActive(true);
         HealthBar.value = CalculateHealth();
     }
 
+    private void Update()
+    {
+        if (transform.position.y < -50f)
+        {
+            Die();
+        }
+    }
 
     public void DealDamage(float damageValue)
     {
@@ -47,6 +58,18 @@ public class Health : MonoBehaviour {
 
     private void Die()
     {
-        SceneManager.LoadScene("_MainScene");
+        if (Lives <= 0)
+        {
+            SceneManager.LoadScene("_MainScene");
+        }
+        else
+        {
+            levelManager.RespawnPlayer();
+            Lives--;
+            livesText.text = Lives.ToString();
+            CurrentHealth = MaxHealth;
+            HealthBar.value = CalculateHealth();
+        }
+        
     }
 }

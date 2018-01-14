@@ -1,101 +1,100 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerInputScript : MonoBehaviour
 {
     //groundcheck
-    public Transform GroundCheck;
+    public Transform groundcheck;
 
-    public Vector3 spawnPosition;
+    public float groundCheckRadius;
     public LayerMask whatIsGround;
+    private bool _grounded;
+    public Vector3 spawnPosition;
     public Text CoinText;
 
     //stats
     [SerializeField] private float _speed = 5f;
+
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
     [SerializeField] private bool _gravityReversed = false;
     [SerializeField] private int _coin = 0;
 
+    private bool _doubleJumped;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private bool _isWalking;
-    private bool _grounded = false;
-    private float _groundRadius = 0.2f;
     private Health _characterUi;
     private PlayerShoot _characterShoot;
+    private bool _canDoubleJump = false;
 
-    
 
-	// Use this for initialization
-	void Start () {
-        //get the components of the player
-	    _rigidbody = GetComponent<Rigidbody2D>();
-	    _animator = GetComponent<Animator>();
-	    _characterUi = GetComponent<Health>();
-	    _characterShoot = GetComponent<PlayerShoot>();
-        _rigidbody.gravityScale = 1;
-	    spawnPosition = gameObject.transform.position;
-	}
 
-    void Update()
+    // Use this for initialization
+    private void Start()
     {
-        CoinText.text = _coin.ToString();
-        if (transform.position.y < -50f)
-        {
-            Die();
-        }
+        //get the components of the player
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _characterUi = GetComponent<Health>();
+        _characterShoot = GetComponent<PlayerShoot>();
+        _rigidbody.gravityScale = 1;
+        spawnPosition = gameObject.transform.position;
+        _canDoubleJump = false;
     }
 
-
-	// Update is called once per frame
-	void FixedUpdate ()
-	{
-        //true or false if ground is hit
-	    _grounded = Physics2D.OverlapCircle(GroundCheck.position, _groundRadius, whatIsGround);
+    private void Update()
+    {
+        if (_grounded)
+        {
+            _doubleJumped = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && _grounded)
+        {
+            Jump();
+        }
+        if (_canDoubleJump)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && !_doubleJumped && !_grounded)
+            {
+                Jump();
+                _doubleJumped = true;
+            }
+        }
         //get the horizontal value of unity
-	    float horizontValue = Input.GetAxis("Horizontal");
+        var horizontValue = Input.GetAxis("Horizontal");
 
         //check if walking
-	    if (_rigidbody.velocity.magnitude > 0.01 && _grounded)
-	    {
-	        _isWalking = true;
-	    }
-	    else
-	    {
-	        _isWalking = false;
-	    }
-        //set animator value to running value for animations
-        _animator.SetBool("IsRunning",_isWalking);
-        
+        _animator.SetFloat("Speed", Mathf.Abs(horizontValue));
+
         //add velocity to the rigidbody in the move direction
-        _rigidbody.velocity = new Vector2(horizontValue * _speed,_rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(horizontValue * _speed, _rigidbody.velocity.y);
 
         //flip the player when going into negative direction
-	    if (horizontValue > 0 && !_facingRight)
-	    {
-	        FlipXAxis();
-	    }else if (horizontValue < 0 && _facingRight)
-	    {
-	        FlipXAxis();
-	    }
+        if (horizontValue > 0 && !_facingRight)
+        {
+            FlipXAxis();
+        }
+        else if (horizontValue < 0 && _facingRight)
+        {
+            FlipXAxis();
+        }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 
-	    if (Input.GetKeyDown(KeyCode.Space) && _grounded)
-	    {
-            //trigger jump animation
-	        _animator.SetTrigger("IsJumping");
-            //add jump force to the y axis of the rigidbody
-            _rigidbody.AddForce(new Vector2(0,_jumpForce));
-	    }
-	    if (Input.GetKeyDown(KeyCode.Escape))
-	    {
-	        Application.Quit();
-	    }
-	}
+        CoinText.text = _coin.ToString();
+    }
+
+    // Update is called once per frame
+    private void FixedUpdate()
+    {
+        //check ground
+        _grounded = Physics2D.OverlapCircle(groundcheck.position, groundCheckRadius, whatIsGround);
+    }
 
     private void FlipXAxis()
     {
@@ -114,12 +113,6 @@ public class PlayerInputScript : MonoBehaviour
     }
 
 
-    private void Die()
-    {
-        //restart
-        SceneManager.LoadScene("_MainScene");
-        gameObject.transform.position = spawnPosition;
-    }
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Saw"))
@@ -128,10 +121,10 @@ public class PlayerInputScript : MonoBehaviour
             _characterUi.DealDamage(6);
             _characterShoot.CurrentAmmoBarValue = 0;
         }
-        
+
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Heart"))
         {
@@ -151,5 +144,17 @@ public class PlayerInputScript : MonoBehaviour
             _characterUi.DealDamage(6);
             _characterShoot.CurrentAmmoBarValue = 0;
         }
+        if (collider.gameObject.CompareTag("DoubleJump"))
+        {
+            _canDoubleJump = true;
+        }
+    }
+
+    private void Jump()
+    {
+        //trigger jump animation
+        _animator.SetTrigger("IsJumping");
+        //add jump force to the y axis of the rigidbody
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
     }
 }

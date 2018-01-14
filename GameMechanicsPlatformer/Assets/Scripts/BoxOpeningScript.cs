@@ -15,7 +15,7 @@ public class BoxOpeningScript : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        AmmoText.gameObject.SetActive(false);
+        //AmmoText.gameObject.SetActive(false);
         AmmoSlider.gameObject.SetActive(false);
         PressE.gameObject.SetActive(false);
     }

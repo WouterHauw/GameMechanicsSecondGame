@@ -19,7 +19,7 @@ public class CameraFollowingScript : MonoBehaviour
 	void FixedUpdate ()
 	{
 	    var posX = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x, ref _velocity.x, _smoothTimeX);
-	    var posY = Mathf.SmoothDamp(transform.position.y, _player.transform.position.y, ref _velocity.y, _smoothTimeY);
+	    var posY = Mathf.SmoothDamp(transform.position.y, _player.transform.position.y +2f, ref _velocity.y, _smoothTimeY);
 
         transform.position = new Vector3(posX,posY,transform.position.z);
 

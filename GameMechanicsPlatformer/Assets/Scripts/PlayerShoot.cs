@@ -10,7 +10,7 @@ public class PlayerShoot : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform ShootPosition;
     public int Ammunition;
-    public Text AmmoText;
+    //public Text AmmoText;
     public Slider Slider;
     public float CurrentAmmoBarValue { get; set; }
     public float MaxAmmoBarValue = 20f;
@@ -22,8 +22,8 @@ public class PlayerShoot : MonoBehaviour
     {
         Ammunition = 10;
         CurrentAmmoBarValue = 0;
-        AmmoText.text = Ammunition.ToString();
-        AmmoText.gameObject.SetActive(false);
+        //AmmoText.text = Ammunition.ToString();
+        //AmmoText.gameObject.SetActive(false);
         Slider.value = CalculateAmmoBar();
         Slider.gameObject.SetActive(false);
         
@@ -37,7 +37,7 @@ public class PlayerShoot : MonoBehaviour
 	    {
 	        return;
 	    }
-	    AmmoText.text = Ammunition.ToString();
+	    //AmmoText.text = Ammunition.ToString();
 	    if (Input.GetKeyDown(KeyCode.E) && _timeElapsed > shootDelay)
 	    {
 	        if (Ammunition > 0)

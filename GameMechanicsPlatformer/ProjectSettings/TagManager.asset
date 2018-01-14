@@ -9,6 +9,9 @@ TagManager:
   - Fireball
   - Coin
   - Spike
+  - Ground
+  - Door
+  - DoubleJump
   layers:
   - Default
   - TransparentFX
