@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907356745426272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.51, y: -1.6, z: 0}
+  m_LocalPosition: {x: -13.4, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4055819996551156}
@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelManager: {fileID: 0}
-  Lives: 0
   livesText: {fileID: 0}
   HealthBar: {fileID: 0}
 --- !u!114 &114813507763834928
@@ -183,10 +182,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootDelay: 0.5
-  projectilePrefab: {fileID: 0}
-  ShootPosition: {fileID: 4055819996551156}
-  Ammunition: 0
-  MaxAmmoBarValue: 20
+  projectilePrefab: {fileID: 1358362412034076, guid: 5f9325ed864b1f644985840eaf6ff6f1,
+    type: 2}
+  shootPosition: {fileID: 4055819996551156}
   _addedAmmo: 53
 --- !u!114 &114893657604095726
 MonoBehaviour:
@@ -207,12 +205,13 @@ MonoBehaviour:
   spawnPosition: {x: 0, y: 0, z: 0}
   coinText: {fileID: 0}
   superCointText: {fileID: 0}
+  TextTutorial: {fileID: 0}
   _speed: 5
   _jumpForce: 8
   _facingRight: 1
   _gravityReversed: 0
   _supercoin: 0
-  _coin: 0
+  _coin: 1
   _upgradeValue: 0
 --- !u!212 &212349739183001814
 SpriteRenderer:

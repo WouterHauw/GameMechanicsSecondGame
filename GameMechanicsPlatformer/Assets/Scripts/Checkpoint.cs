@@ -25,6 +25,7 @@ public class Checkpoint : MonoBehaviour
     IEnumerator SetTextCheckpoint()
     {
         checkpointReachedText.gameObject.SetActive(true);
+        checkpointReachedText.text = "Checkpoint Reached";
         yield return new WaitForSeconds(2.0f);
         checkpointReachedText.gameObject.SetActive(false);
 

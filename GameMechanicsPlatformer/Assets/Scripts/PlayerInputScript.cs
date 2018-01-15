@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerInputScript : MonoBehaviour
@@ -12,6 +13,7 @@ public class PlayerInputScript : MonoBehaviour
     public Vector3 spawnPosition;
     public Text coinText;
     public Text superCointText;
+    public Text TextTutorial;
 
     //stats
     [SerializeField] private float _speed = 5f;
@@ -91,7 +93,7 @@ public class PlayerInputScript : MonoBehaviour
         {
             Application.Quit();
         }
-        if (_coin > 5)
+        if (_coin >= 5)
         {
             _coin -= 5;
             _supercoin++;
@@ -143,7 +145,6 @@ public class PlayerInputScript : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             _characterUi.DealDamage(6);
-            _characterShoot.CurrentAmmoBarValue = 0;
         }
 
     }
@@ -170,11 +171,11 @@ public class PlayerInputScript : MonoBehaviour
         {
             collider.gameObject.SetActive(false);
             _characterUi.DealDamage(6);
-            _characterShoot.CurrentAmmoBarValue = 0;
         }
         if (collider.gameObject.CompareTag("DoubleJump"))
         {
             _canDoubleJump = true;
+            StartCoroutine(SetTextCheckpoint());
         }
     }
 
@@ -184,5 +185,13 @@ public class PlayerInputScript : MonoBehaviour
         _animator.SetTrigger("IsJumping");
         //add jump force to the y axis of the rigidbody
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+    }
+    IEnumerator SetTextCheckpoint()
+    {
+        TextTutorial.gameObject.SetActive(true);
+        TextTutorial.text = "Double Jump activated,Double space for use";
+        yield return new WaitForSeconds(2.0f);
+        TextTutorial.gameObject.SetActive(false);
+
     }
 }
