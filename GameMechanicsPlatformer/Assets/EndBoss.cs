@@ -63,10 +63,12 @@ public class EndBoss : MonoBehaviour
 
     IEnumerator WinTheGame()
     {
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         WinText.gameObject.SetActive(true);
         yield return new WaitForSeconds(3.0f);
         WinText.gameObject.SetActive(false);
-        SceneManager.LoadScene("_MainScene");
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        SceneManager.LoadScene("StartScene");
     }
 
     IEnumerator FireBullet()
