@@ -10,13 +10,13 @@ public class BoxOpeningScript : MonoBehaviour
     public GameObject projectilePrefab;
     public Text AmmoText;
     public Text PressE;
-    public Slider AmmoSlider;
+    //public Slider AmmoSlider;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         //AmmoText.gameObject.SetActive(false);
-        AmmoSlider.gameObject.SetActive(false);
+        //AmmoSlider.gameObject.SetActive(false);
         PressE.gameObject.SetActive(false);
     }
 
@@ -33,7 +33,7 @@ public class BoxOpeningScript : MonoBehaviour
             var shootBehaviour = other.GetComponent<PlayerShoot>();
             shootBehaviour.projectilePrefab = projectilePrefab;
             AmmoText.gameObject.SetActive(true);
-            AmmoSlider.gameObject.SetActive(true);
+            //AmmoSlider.gameObject.SetActive(true);
         }
     }
 

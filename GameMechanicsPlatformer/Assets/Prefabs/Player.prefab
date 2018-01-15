@@ -186,7 +186,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   ShootPosition: {fileID: 4055819996551156}
   Ammunition: 0
-  Slider: {fileID: 0}
   MaxAmmoBarValue: 20
   _addedAmmo: 53
 --- !u!114 &114893657604095726
@@ -206,12 +205,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   spawnPosition: {x: 0, y: 0, z: 0}
-  CoinText: {fileID: 0}
+  coinText: {fileID: 0}
+  superCointText: {fileID: 0}
   _speed: 5
   _jumpForce: 8
   _facingRight: 1
   _gravityReversed: 0
+  _supercoin: 0
   _coin: 0
+  _upgradeValue: 0
 --- !u!212 &212349739183001814
 SpriteRenderer:
   m_ObjectHideFlags: 1

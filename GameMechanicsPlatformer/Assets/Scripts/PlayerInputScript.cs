@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerInputScript : MonoBehaviour
@@ -11,7 +10,8 @@ public class PlayerInputScript : MonoBehaviour
     public LayerMask whatIsGround;
     private bool _grounded;
     public Vector3 spawnPosition;
-    public Text CoinText;
+    public Text coinText;
+    public Text superCointText;
 
     //stats
     [SerializeField] private float _speed = 5f;
@@ -19,7 +19,9 @@ public class PlayerInputScript : MonoBehaviour
     [SerializeField] private float _jumpForce = 700f;
     [SerializeField] private bool _facingRight = true;
     [SerializeField] private bool _gravityReversed = false;
-    [SerializeField] private int _coin = 0;
+    [SerializeField] private int _supercoin = 0;
+    [SerializeField] private int _coin;
+    [SerializeField] private int _upgradeValue;
 
     private bool _doubleJumped;
     private Rigidbody2D _rigidbody;
@@ -42,6 +44,10 @@ public class PlayerInputScript : MonoBehaviour
         _rigidbody.gravityScale = 1;
         spawnPosition = gameObject.transform.position;
         _canDoubleJump = false;
+         _supercoin = 0;
+         _coin = 0;
+        _upgradeValue = 0;
+
     }
 
     private void Update()
@@ -85,8 +91,26 @@ public class PlayerInputScript : MonoBehaviour
         {
             Application.Quit();
         }
-
-        CoinText.text = _coin.ToString();
+        if (_coin > 5)
+        {
+            _coin -= 5;
+            _supercoin++;
+        }
+        if (_supercoin >= 5)
+        {
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                _supercoin -= 5;
+                _upgradeValue++;
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                _supercoin -= 5;
+                _characterUi.AddTry();
+            }
+        }
+        coinText.text = _coin.ToString();
+        superCointText.text = _supercoin.ToString();
     }
 
     // Update is called once per frame
@@ -131,11 +155,15 @@ public class PlayerInputScript : MonoBehaviour
             collider.gameObject.SetActive(false);
             _characterUi.AddHealth(10);
         }
+        if (collider.gameObject.CompareTag("SuperCoin"))
+        {
+            _supercoin++;
+            collider.gameObject.SetActive(false);
+        }
         if (collider.gameObject.CompareTag("Coin"))
         {
-            _coin++;
+            _coin+= 1 + _upgradeValue;
             collider.gameObject.SetActive(false);
-            _characterShoot.Ammunition += 1;
 
         }
         if (collider.gameObject.CompareTag("Spike"))

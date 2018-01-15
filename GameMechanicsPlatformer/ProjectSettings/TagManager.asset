@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Door
   - DoubleJump
+  - SuperCoin
   layers:
   - Default
   - TransparentFX

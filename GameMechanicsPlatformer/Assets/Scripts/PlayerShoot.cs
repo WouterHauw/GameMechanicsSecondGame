@@ -11,7 +11,6 @@ public class PlayerShoot : MonoBehaviour
     public Transform ShootPosition;
     public int Ammunition;
     //public Text AmmoText;
-    public Slider Slider;
     public float CurrentAmmoBarValue { get; set; }
     public float MaxAmmoBarValue = 20f;
 
@@ -24,8 +23,6 @@ public class PlayerShoot : MonoBehaviour
         CurrentAmmoBarValue = 0;
         //AmmoText.text = Ammunition.ToString();
         //AmmoText.gameObject.SetActive(false);
-        Slider.value = CalculateAmmoBar();
-        Slider.gameObject.SetActive(false);
         
     }
 
@@ -54,7 +51,6 @@ public class PlayerShoot : MonoBehaviour
 	        Ammunition += _addedAmmo;
 	        CurrentAmmoBarValue = 0;
 	    }
-	    Slider.value = CalculateAmmoBar();
 	}
 
     public void CreateProjectile(Vector2 pos)

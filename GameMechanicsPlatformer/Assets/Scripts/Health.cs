@@ -6,7 +6,7 @@ public class Health : MonoBehaviour {
     public float CurrentHealth { get; set; }
     public float MaxHealth { get; set; }
     public LevelManager levelManager;
-    public int Lives;
+    private int _lives;
     public Text livesText;
 
     public Slider HealthBar;
@@ -15,12 +15,18 @@ public class Health : MonoBehaviour {
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
-        Lives = 10;
+        _lives = 10;
         MaxHealth = 20f;
         CurrentHealth = MaxHealth;
-        livesText.text = Lives.ToString();
+        livesText.text = _lives.ToString();
         livesText.gameObject.SetActive(true);
         HealthBar.value = CalculateHealth();
+    }
+
+    public void AddTry()
+    {
+        _lives++;
+        livesText.text = _lives.ToString();
     }
 
     private void Update()
@@ -58,15 +64,15 @@ public class Health : MonoBehaviour {
 
     private void Die()
     {
-        if (Lives <= 0)
+        if (_lives <= 0)
         {
             SceneManager.LoadScene("_MainScene");
         }
         else
         {
             levelManager.RespawnPlayer();
-            Lives--;
-            livesText.text = Lives.ToString();
+            _lives--;
+            livesText.text = _lives.ToString();
             CurrentHealth = MaxHealth;
             HealthBar.value = CalculateHealth();
         }
